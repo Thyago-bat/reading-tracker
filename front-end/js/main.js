@@ -341,6 +341,7 @@ App.Main = (function () {
       newThemeNames = value.newThemes;
       delete value.newThemes;
     } else value = readForm(kind);
+    if (id) value.id = id;
     let errors = V.validate(kind, value, db);
     let firstReading = null;
     if (kind === 'book' && !id && $('#firstReading').value === 'yes') {
