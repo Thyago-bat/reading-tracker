@@ -1,6 +1,7 @@
 window.App = window.App || {};
 App.Render = (function () {
   'use strict';
+  const S = App.Strings;
   const esc = value =>
     String(value ?? '').replace(
       /[&<>"']/g,
@@ -34,11 +35,17 @@ App.Render = (function () {
     const el = document.querySelector(id),
       { total, page, pages, start } = result;
     if (!total) {
-      el.innerHTML = '<span>No matching records</span>';
+      el.innerHTML = `<span>${S.table.noRecords}</span>`;
       return;
     }
     const end = Math.min(start + PAGE_SIZE, total);
-    el.innerHTML = `<span>Showing ${start + 1}–${end} of ${total}</span><div class="pager-controls"><button type="button" data-pager="${id}" data-page="${page - 1}" ${page <= 1 ? 'disabled' : ''} aria-label="Previous page">‹</button><span>Page ${page} of ${pages}</span><button type="button" data-pager="${id}" data-page="${page + 1}" ${page >= pages ? 'disabled' : ''} aria-label="Next page">›</button></div>`;
+    el.innerHTML = `<span>${S.table.showing
+      .replace('{start}', start + 1)
+      .replace('{end}', end)
+      .replace(
+        '{total}',
+        total,
+      )}</span><div class="pager-controls"><button type="button" data-pager="${id}" data-page="${page - 1}" ${page <= 1 ? 'disabled' : ''} aria-label="${S.table.previousPage}">‹</button><span>${S.table.page.replace('{page}', page).replace('{pages}', pages)}</span><button type="button" data-pager="${id}" data-page="${page + 1}" ${page >= pages ? 'disabled' : ''} aria-label="${S.table.nextPage}">›</button></div>`;
   }
   function readings(db, sortKey = 'yearRead', sortDirection = -1, query = '', page = 1) {
     const records = db.readings.map(r => ({
@@ -70,10 +77,10 @@ App.Render = (function () {
       ? result.records
           .map(
             r =>
-              `<tr><td><strong>${esc(r.title)}</strong></td><td>${esc(empty(r.authors))}</td><td><span class="pill">${esc(r.status)}</span></td><td>${esc(empty(r.yearRead))}</td><td>${esc(empty(r.grade))}</td><td><div class="actions"><button class="text-button" data-action="edit-reading" data-id="${r.id}">Edit</button><button class="text-button danger" data-action="delete-reading" data-id="${r.id}">Delete</button></div></td></tr>`,
+              `<tr><td><strong>${esc(r.title)}</strong></td><td>${esc(empty(r.authors))}</td><td><span class="pill">${esc(r.status)}</span></td><td>${esc(empty(r.yearRead))}</td><td>${esc(empty(r.grade))}</td><td><div class="actions"><button class="text-button" data-action="edit-reading" data-id="${r.id}">${S.table.edit}</button><button class="text-button danger" data-action="delete-reading" data-id="${r.id}">${S.table.delete}</button></div></td></tr>`,
           )
           .join('')
-      : '<tr><td class="empty" colspan="6">No matching readings.</td></tr>';
+      : `<tr><td class="empty" colspan="6">${S.table.noReadings}</td></tr>`;
   }
   function books(db, query = '', page = 1) {
     const records = db.books.map(b => {
@@ -102,10 +109,10 @@ App.Render = (function () {
       ? result.records
           .map(
             b =>
-              `<tr><td><strong>${esc(b.title)}</strong></td><td>${esc(empty(b.authors))}</td><td>${esc(empty(b.publicationYear))}</td><td>${esc(empty(b.form))}</td><td>${esc(b.themes || '-')}</td><td><div class="actions"><button class="text-button" data-action="edit-book" data-id="${b.id}">Edit</button><button class="text-button" data-action="add-book-reading" data-id="${b.id}">Add reading</button><button class="text-button danger" data-action="delete-book" data-id="${b.id}">Delete</button></div></td></tr>`,
+              `<tr><td><strong>${esc(b.title)}</strong></td><td>${esc(empty(b.authors))}</td><td>${esc(empty(b.publicationYear))}</td><td>${esc(empty(b.form))}</td><td>${esc(b.themes || '-')}</td><td><div class="actions"><button class="text-button" data-action="edit-book" data-id="${b.id}">${S.table.edit}</button><button class="text-button" data-action="add-book-reading" data-id="${b.id}">${S.table.addReading}</button><button class="text-button danger" data-action="delete-book" data-id="${b.id}">${S.table.delete}</button></div></td></tr>`,
           )
           .join('')
-      : '<tr><td class="empty" colspan="6">No matching books.</td></tr>';
+      : `<tr><td class="empty" colspan="6">${S.table.noBooks}</td></tr>`;
   }
   function authors(db, query = '', page = 1) {
     const records = db.authors.map(a => ({
@@ -124,10 +131,10 @@ App.Render = (function () {
       ? result.records
           .map(
             a =>
-              `<tr><td><strong>${esc(a.name)}</strong></td><td>${esc(a.nationality)}</td><td>${esc(empty(a.birthDate))}</td><td>${esc(empty(a.deathDate))}</td><td><div class="actions"><button class="text-button" data-action="edit-author" data-id="${a.id}">Edit</button><button class="text-button danger" data-action="delete-author" data-id="${a.id}">Delete</button></div></td></tr>`,
+              `<tr><td><strong>${esc(a.name)}</strong></td><td>${esc(a.nationality)}</td><td>${esc(empty(a.birthDate))}</td><td>${esc(empty(a.deathDate))}</td><td><div class="actions"><button class="text-button" data-action="edit-author" data-id="${a.id}">${S.table.edit}</button><button class="text-button danger" data-action="delete-author" data-id="${a.id}">${S.table.delete}</button></div></td></tr>`,
           )
           .join('')
-      : '<tr><td class="empty" colspan="5">No matching authors.</td></tr>';
+      : `<tr><td class="empty" colspan="5">${S.table.noAuthors}</td></tr>`;
   }
   function metrics(db) {
     const graded = db.readings.filter(r => typeof r.grade === 'number');
@@ -135,10 +142,10 @@ App.Render = (function () {
       ? (graded.reduce((sum, r) => sum + r.grade, 0) / graded.length).toFixed(1)
       : '—';
     const cards = [
-      ['Books', db.books.length, 'in your catalog'],
-      ['Authors', db.authors.length, 'in your index'],
-      ['Readings', db.readings.length, 'logged in total'],
-      ['Average grade', average, `${graded.length} rated readings`],
+      [S.metrics.books, db.books.length, S.metrics.booksNote],
+      [S.metrics.authors, db.authors.length, S.metrics.authorsNote],
+      [S.metrics.readings, db.readings.length, S.metrics.readingsNote],
+      [S.metrics.averageGrade, average, S.metrics.ratedReadings.replace('{count}', graded.length)],
     ];
     document.querySelector('#metrics').innerHTML = cards
       .map(
@@ -159,7 +166,7 @@ App.Render = (function () {
       })
       .join('');
     document.querySelector('#status-chart').innerHTML =
-      `<svg class="bar-stack" viewBox="0 0 100 12" preserveAspectRatio="none" role="img" aria-label="Reading status distribution">${segments}</svg>`;
+      `<svg class="bar-stack" viewBox="0 0 100 12" preserveAspectRatio="none" role="img" aria-label="${S.metrics.statusChart}">${segments}</svg>`;
     document.querySelector('#status-legend').innerHTML = statuses
       .map(
         (s, i) =>
@@ -173,7 +180,7 @@ App.Render = (function () {
       ['9–10', r => r >= 9],
     ];
     document.querySelector('#rating-snapshot').innerHTML =
-      `<div class="rating-summary"><strong>${average}</strong><span>/ 10 average</span></div><div class="rating-bars">${bins
+      `<div class="rating-summary"><strong>${average}</strong><span>${S.metrics.average}</span></div><div class="rating-bars">${bins
         .map(([label, test]) => {
           const n = graded.filter(r => test(r.grade)).length,
             width = graded.length ? (n / graded.length) * 100 : 0;
@@ -189,3 +196,4 @@ App.Render = (function () {
   }
   return { all, readings };
 })();
+ 
