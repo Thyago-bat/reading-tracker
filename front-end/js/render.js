@@ -11,7 +11,7 @@ App.Render = (function () {
     (ids || [])
       .map(id => authors.find(a => a.id === id)?.name)
       .filter(Boolean)
-      .join(', ') || '-';
+      .join(', ');
   const bookName = (id, books) => books.find(b => b.id === id)?.title || '-';
   const PAGE_SIZE = 25;
   function pageRecords(records, query, page) {
@@ -70,7 +70,7 @@ App.Render = (function () {
       ? result.records
           .map(
             r =>
-              `<tr><td><strong>${esc(r.title)}</strong></td><td>${esc(r.authors)}</td><td><span class="pill">${esc(r.status)}</span></td><td>${esc(empty(r.yearRead))}</td><td>${esc(empty(r.grade))}</td><td><div class="actions"><button class="text-button" data-action="edit-reading" data-id="${r.id}">Edit</button><button class="text-button danger" data-action="delete-reading" data-id="${r.id}">Delete</button></div></td></tr>`,
+              `<tr><td><strong>${esc(r.title)}</strong></td><td>${esc(empty(r.authors))}</td><td><span class="pill">${esc(r.status)}</span></td><td>${esc(empty(r.yearRead))}</td><td>${esc(empty(r.grade))}</td><td><div class="actions"><button class="text-button" data-action="edit-reading" data-id="${r.id}">Edit</button><button class="text-button danger" data-action="delete-reading" data-id="${r.id}">Delete</button></div></td></tr>`,
           )
           .join('')
       : '<tr><td class="empty" colspan="6">No matching readings.</td></tr>';
@@ -102,7 +102,7 @@ App.Render = (function () {
       ? result.records
           .map(
             b =>
-              `<tr><td><strong>${esc(b.title)}</strong></td><td>${esc(b.authors)}</td><td>${esc(empty(b.publicationYear))}</td><td>${esc(empty(b.form))}</td><td>${esc(b.themes || '-')}</td><td><div class="actions"><button class="text-button" data-action="edit-book" data-id="${b.id}">Edit</button><button class="text-button" data-action="add-book-reading" data-id="${b.id}">Add reading</button><button class="text-button danger" data-action="delete-book" data-id="${b.id}">Delete</button></div></td></tr>`,
+              `<tr><td><strong>${esc(b.title)}</strong></td><td>${esc(empty(b.authors))}</td><td>${esc(empty(b.publicationYear))}</td><td>${esc(empty(b.form))}</td><td>${esc(b.themes || '-')}</td><td><div class="actions"><button class="text-button" data-action="edit-book" data-id="${b.id}">Edit</button><button class="text-button" data-action="add-book-reading" data-id="${b.id}">Add reading</button><button class="text-button danger" data-action="delete-book" data-id="${b.id}">Delete</button></div></td></tr>`,
           )
           .join('')
       : '<tr><td class="empty" colspan="6">No matching books.</td></tr>';
