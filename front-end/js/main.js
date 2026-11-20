@@ -41,17 +41,17 @@ App.Main = (function () {
       .join('');
   }
   function selectList(id, list, selected, multiple = false) {
-    return `<select id="${id}" ${multiple ? 'multiple' : ''}>${multiple ? '' : '<option value="">— Select —</option>'}${list.map(o => `<option value="${o.id}" ${(multiple ? (selected || []).includes(o.id) : selected === o.id) ? 'selected' : ''}>${esc(o.name)}</option>`).join('')}</select>`;
+    return `<select id="${id}" ${multiple ? 'multiple' : ''}>${multiple ? '' : `<option value="">${S.form.select}</option>`}${list.map(o => `<option value="${o.id}" ${(multiple ? (selected || []).includes(o.id) : selected === o.id) ? 'selected' : ''}>${esc(o.name)}</option>`).join('')}</select>`;
   }
   function openForm(kind, record = {}, extra = {}) {
     const editing = Boolean(record.id),
       fields = [];
     let title;
     if (kind === 'author') {
-      title = editing ? 'Edit author' : 'Add author';
+      title = editing ? S.titles.editAuthor : S.titles.addAuthor;
       fields.push(
         field(
-          'Name *',
+          S.labels.name,
           'name',
           `<input id="name" maxlength="160" required value="${esc(record.name || '')}">`,
           true,
@@ -59,30 +59,30 @@ App.Main = (function () {
       );
       fields.push(
         field(
-          'Nationality',
+          S.labels.nationality,
           'countryId',
           selectList('countryId', db.countries, record.countryId || ''),
         ),
       );
       fields.push(
         field(
-          'Birth date',
+          S.labels.birthDate,
           'birthDate',
           `<input id="birthDate" type="date" value="${esc(record.birthDate || '')}">`,
         ),
       );
       fields.push(
         field(
-          'Death date',
+          S.labels.deathDate,
           'deathDate',
           `<input id="deathDate" type="date" value="${esc(record.deathDate || '')}">`,
         ),
       );
     } else if (kind === 'book') {
-      title = editing ? 'Edit book' : 'Add book';
+      title = editing ? S.titles.editBook : S.titles.addBook;
       fields.push(
         field(
-          'Title *',
+          S.labels.title,
           'title',
           `<input id="title" maxlength="250" required value="${esc(record.title || '')}">`,
           true,
@@ -90,7 +90,7 @@ App.Main = (function () {
       );
       fields.push(
         field(
-          'Authors',
+          S.labels.authors,
           'authorIds',
           selectList('authorIds', db.authors, record.authorIds || [], true),
           true,
@@ -98,16 +98,16 @@ App.Main = (function () {
       );
       fields.push(
         field(
-          'Original publication year',
+          S.labels.publicationYear,
           'publicationYear',
-          `<input id="publicationYear" type="number" step="1" placeholder="Negative years mean BC" value="${esc(record.publicationYear ?? '')}">`,
+          `<input id="publicationYear" type="number" step="1" placeholder="${S.form.publicationYearHint}" value="${esc(record.publicationYear ?? '')}">`,
         ),
       );
       fields.push(
         field(
-          'Form',
+          S.labels.form,
           'form',
-          `<select id="form"><option value="">— Select —</option>${selectOptions(
+          `<select id="form"><option value="">${S.form.select}</option>${selectOptions(
             S.forms.map(x => ({ value: x, label: x })),
             record.form || '',
           )}</select>`,
@@ -115,9 +115,9 @@ App.Main = (function () {
       );
       fields.push(
         field(
-          'Mode of expression',
+          S.labels.mode,
           'mode',
-          `<select id="mode"><option value="">— Select —</option>${selectOptions(
+          `<select id="mode"><option value="">${S.form.select}</option>${selectOptions(
             S.modes.map(x => ({ value: x, label: x })),
             record.mode || '',
           )}</select>`,
@@ -125,9 +125,9 @@ App.Main = (function () {
       );
       fields.push(
         field(
-          'Content',
+          S.labels.content,
           'content',
-          `<select id="content"><option value="">— Select —</option>${selectOptions(
+          `<select id="content"><option value="">${S.form.select}</option>${selectOptions(
             S.contents.map(x => ({ value: x, label: x })),
             record.content || '',
           )}</select>`,
@@ -135,7 +135,7 @@ App.Main = (function () {
       );
       fields.push(
         field(
-          'Themes',
+          S.labels.themes,
           'themeIds',
           selectList('themeIds', db.themes, record.themeIds || [], true),
           true,
@@ -143,28 +143,28 @@ App.Main = (function () {
       );
       fields.push(
         field(
-          'Create theme(s), comma separated',
+          S.labels.newThemes,
           'newThemes',
-          '<input id="newThemes" placeholder="e.g. Memory, Family">',
+          `<input id="newThemes" placeholder="${S.form.newThemesHint}">`,
           true,
         ),
       );
       if (!editing) {
-        fields.push('<div class="section-title">Optional first reading</div>');
+        fields.push(`<div class="section-title">${S.form.optionalFirstReading}</div>`);
         fields.push(
           field(
-            'Create a first reading',
+            S.labels.firstReading,
             'firstReading',
-            '<select id="firstReading"><option value="no">No</option><option value="yes">Yes</option></select>',
+            `<select id="firstReading"><option value="no">${S.form.no}</option><option value="yes">${S.form.yes}</option></select>`,
           ),
         );
         fields.push(readingFields({ status: 'Want to read' }, 'first-'));
       }
     } else {
-      title = editing ? 'Edit reading' : 'Add reading';
+      title = editing ? S.titles.editReading : S.titles.addReading;
       fields.push(
         field(
-          'Book *',
+          S.labels.book,
           'bookId',
           selectList(
             'bookId',
@@ -194,9 +194,9 @@ App.Main = (function () {
   function readingFields(record = {}, prefix = '') {
     const status = record.status || 'Want to read';
     return (
-      `<div class="section-title">${prefix ? 'First reading details' : 'Reading details'}</div>` +
+      `<div class="section-title">${prefix ? S.form.firstReadingDetails : S.form.readingDetails}</div>` +
       field(
-        'Status *',
+        S.labels.status,
         `${prefix}status`,
         `<select id="${prefix}status">${selectOptions(
           S.statuses.map(x => ({ value: x, label: x })),
@@ -204,30 +204,30 @@ App.Main = (function () {
         )}</select>`,
       ) +
       field(
-        'Year read',
+        S.labels.yearRead,
         `${prefix}yearRead`,
         `<input id="${prefix}yearRead" type="number" step="1" value="${esc(record.yearRead ?? '')}">`,
       ) +
       field(
-        'Grade',
+        S.labels.grade,
         `${prefix}grade`,
         `<input id="${prefix}grade" type="number" min="0" max="10" step="0.5" value="${esc(record.grade ?? '')}">`,
       ) +
       field(
-        'Priority',
+        S.labels.priority,
         `${prefix}priority`,
-        `<select id="${prefix}priority"><option value="">— Select —</option>${selectOptions(
+        `<select id="${prefix}priority"><option value="">${S.form.select}</option>${selectOptions(
           S.priorities.map(x => ({ value: x, label: x })),
           record.priority || '',
         )}</select>`,
       ) +
       field(
-        'Recommended by',
+        S.labels.recommendedBy,
         `${prefix}recommendedBy`,
         `<input id="${prefix}recommendedBy" maxlength="160" value="${esc(record.recommendedBy || '')}">`,
       ) +
       field(
-        'Notes',
+        S.labels.notes,
         `${prefix}notes`,
         `<textarea id="${prefix}notes" rows="2">${esc(record.notes || '')}</textarea>`,
         true,
@@ -434,7 +434,7 @@ App.Main = (function () {
     if (action === 'add-book-reading') openForm('reading', {}, { bookId: id });
     if (action === 'delete-author') {
       const author = db.authors.find(x => x.id === id);
-      if (!confirm(`Delete author “${author.name}”?`)) return;
+      if (!confirm(S.messages.deleteAuthor.replace('{name}', author.name))) return;
       try {
         await App.Store.deleteRecord('authors', id);
         await refresh();
@@ -455,7 +455,7 @@ App.Main = (function () {
       }
     }
     if (action === 'delete-reading') {
-      if (!confirm('Delete this reading?')) return;
+      if (!confirm(S.messages.deleteReading)) return;
       try {
         await App.Store.deleteRecord('readings', id);
         await refresh();
@@ -473,11 +473,12 @@ App.Main = (function () {
       .querySelectorAll('.nav-button')
       .forEach(el => el.classList.toggle('active', el.dataset.page === page));
     const input = $('#global-search');
-    input.placeholder = `Search ${page === 'readings' ? 'readings' : page}…`;
-    input.setAttribute('aria-label', `Search ${page === 'readings' ? 'readings' : page}`);
+    const searchText = S.table.search.replace('{page}', page);
+    input.placeholder = searchText;
+    input.setAttribute('aria-label', searchText.replace('…', ''));
   }
   async function resetData() {
-    if (!confirm('Delete all changes and restore the instructor seed data?')) return;
+    if (!confirm(S.messages.resetConfirm)) return;
     db = await App.Store.reset();
     render();
     notify(S.messages.reset);
@@ -541,7 +542,8 @@ document.addEventListener('DOMContentLoaded', () =>
   App.Main.init().catch(error => {
     console.error(error);
     const n = document.querySelector('#notice');
-    n.textContent = `Could not start the app: ${error.message} Start it with a local web server.`;
+    n.textContent = App.Strings.messages.startError.replace('{error}', error.message);
     n.classList.add('show');
   }),
 );
+ 
