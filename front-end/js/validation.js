@@ -16,9 +16,9 @@ App.Validation = (function () {
       required('name', 'Name');
       const same = state.authors.find(a => a.name.toLocaleLowerCase() === String(value.name).trim().toLocaleLowerCase() && a.id !== value.id);
       if (same) errors.name = 'An author with this name already exists.';
-      if (value.birthDate && value.birthDate > new Date().toISOString().slice(0,10)) errors.birthDate = 'Birth date cannot be in the future.';
+      if (value.birthDate && value.birthDate > new Date().toISOString().slice(0, 10)) errors.birthDate = 'Birth date cannot be in the future.';
       if (value.deathDate && value.birthDate && value.deathDate <= value.birthDate) errors.deathDate = 'Death date must be after birth date.';
-      if (value.deathDate && value.deathDate > new Date().toISOString().slice(0,10)) errors.deathDate = 'Death date cannot be in the future.';
+      if (value.deathDate && value.deathDate > new Date().toISOString().slice(0, 10)) errors.deathDate = 'Death date cannot be in the future.';
       if (value.countryId && !state.countries.some(c => c.id === Number(value.countryId))) errors.countryId = 'Choose a country from the list.';
     }
     if (type === 'book') {
@@ -35,12 +35,12 @@ App.Validation = (function () {
       year('yearRead', 'Year read', 1, now);
       const book = state.books.find(b => b.id === Number(value.bookId));
       if (book?.publicationYear && value.yearRead && Number(value.yearRead) < book.publicationYear) errors.yearRead = 'Year read cannot be earlier than publication year.';
-      if (!['Read','Abandoned'].includes(value.status) && value.yearRead !== '' && value.yearRead != null) errors.yearRead = 'Year read is allowed only for Read or Abandoned.';
+      if (!['Read', 'Abandoned'].includes(value.status) && value.yearRead !== '' && value.yearRead != null) errors.yearRead = 'Year read is allowed only for Read or Abandoned.';
       if (value.grade !== '' && value.grade != null) {
         const grade = Number(value.grade);
         if (!Number.isFinite(grade) || grade < 0 || grade > 10 || Math.round(grade * 2) !== grade * 2) errors.grade = 'Grade must be from 0 to 10 in steps of 0.5.';
       }
-      if (!['Read','Abandoned'].includes(value.status) && value.grade !== '' && value.grade != null) errors.grade = 'Grade is allowed only for Read or Abandoned.';
+      if (!['Read', 'Abandoned'].includes(value.status) && value.grade !== '' && value.grade != null) errors.grade = 'Grade is allowed only for Read or Abandoned.';
       if (value.status !== 'Want to read' && value.priority) errors.priority = 'Priority is allowed only for Want to read.';
     }
     return errors;

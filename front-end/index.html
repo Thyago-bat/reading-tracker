@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,6 +8,7 @@
   <title>Reading Tracker</title>
   <link rel="stylesheet" href="css/tracker.css" />
 </head>
+
 <body>
   <header class="topbar">
     <a class="brand" href="#readings">Reading Tracker</a>
@@ -15,37 +17,127 @@
       <button class="nav-button" data-page="books">Books</button>
       <button class="nav-button" data-page="authors">Authors</button>
     </nav>
-    <label class="search-box"><span aria-hidden="true">⌕</span><input id="global-search" type="search" placeholder="Search this section…" aria-label="Search current section"></label>
+    <label class="search-box"><span aria-hidden="true">⌕</span><input id="global-search" type="search"
+        placeholder="Search this section…" aria-label="Search current section"></label>
     <button class="button button-light" id="reset-data">Reset data</button>
   </header>
   <main class="wrap">
     <section class="page active" id="page-readings">
-      <div class="heading"><div><p class="eyebrow">YOUR READING HISTORY</p><h1>Reading log</h1><p class="muted">Every reading, including books you plan to read.</p></div><button class="button" id="add-reading">Add reading</button></div>
+      <div class="heading">
+        <div>
+          <p class="eyebrow">YOUR READING HISTORY</p>
+          <h1>Reading log</h1>
+          <p class="muted">Every reading, including books you plan to read.</p>
+        </div><button class="button" id="add-reading">Add reading</button>
+      </div>
       <div class="metrics" id="metrics"></div>
       <section class="insights" aria-label="Reading insights">
-        <div class="insight-card"><div class="insight-heading"><div><p class="eyebrow">AT A GLANCE</p><h2>Reading mix</h2></div><span class="insight-icon">◒</span></div><div id="status-chart" class="status-chart"></div><div id="status-legend" class="legend"></div></div>
-        <div class="insight-card rating-card"><div class="insight-heading"><div><p class="eyebrow">YOUR SCORES</p><h2>Rating snapshot</h2></div><span class="insight-icon">✦</span></div><div id="rating-snapshot"></div></div>
+        <div class="insight-card">
+          <div class="insight-heading">
+            <div>
+              <p class="eyebrow">AT A GLANCE</p>
+              <h2>Reading mix</h2>
+            </div><span class="insight-icon">◒</span>
+          </div>
+          <div id="status-chart" class="status-chart"></div>
+          <div id="status-legend" class="legend"></div>
+        </div>
+        <div class="insight-card rating-card">
+          <div class="insight-heading">
+            <div>
+              <p class="eyebrow">YOUR SCORES</p>
+              <h2>Rating snapshot</h2>
+            </div><span class="insight-icon">✦</span>
+          </div>
+          <div id="rating-snapshot"></div>
+        </div>
       </section>
-      <div class="table-wrap"><table><thead><tr><th><button class="sort" data-sort="title">Title ↕</button></th><th><button class="sort" data-sort="authors">Authors ↕</button></th><th><button class="sort" data-sort="status">Status ↕</button></th><th><button class="sort" data-sort="yearRead">Year read ↕</button></th><th><button class="sort" data-sort="grade">Grade ↕</button></th><th>Actions</th></tr></thead><tbody id="reading-rows"></tbody></table></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th><button class="sort" data-sort="title">Title ↕</button></th>
+              <th><button class="sort" data-sort="authors">Authors ↕</button></th>
+              <th><button class="sort" data-sort="status">Status ↕</button></th>
+              <th><button class="sort" data-sort="yearRead">Year read ↕</button></th>
+              <th><button class="sort" data-sort="grade">Grade ↕</button></th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reading-rows"></tbody>
+        </table>
+      </div>
       <div class="pager" id="reading-pager" aria-label="Reading pages"></div>
     </section>
     <section class="page" id="page-books">
-      <div class="heading"><div><p class="eyebrow">YOUR CATALOG</p><h1>Books</h1><p class="muted">Works, authors, publication details and themes.</p></div><button class="button" id="add-book">Add book</button></div>
-      <div class="table-wrap"><table><thead><tr><th>Title</th><th>Authors</th><th>Year</th><th>Form</th><th>Themes</th><th>Actions</th></tr></thead><tbody id="book-rows"></tbody></table></div>
+      <div class="heading">
+        <div>
+          <p class="eyebrow">YOUR CATALOG</p>
+          <h1>Books</h1>
+          <p class="muted">Works, authors, publication details and themes.</p>
+        </div><button class="button" id="add-book">Add book</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Authors</th>
+              <th>Year</th>
+              <th>Form</th>
+              <th>Themes</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="book-rows"></tbody>
+        </table>
+      </div>
       <div class="pager" id="book-pager" aria-label="Book pages"></div>
     </section>
     <section class="page" id="page-authors">
-      <div class="heading"><div><p class="eyebrow">PEOPLE BEHIND THE BOOKS</p><h1>Authors</h1><p class="muted">Author records use a fixed list of countries from the seed data.</p></div><button class="button" id="add-author">Add author</button></div>
-      <div class="table-wrap"><table><thead><tr><th>Name</th><th>Nationality</th><th>Birth</th><th>Death</th><th>Actions</th></tr></thead><tbody id="author-rows"></tbody></table></div>
+      <div class="heading">
+        <div>
+          <p class="eyebrow">PEOPLE BEHIND THE BOOKS</p>
+          <h1>Authors</h1>
+          <p class="muted">Author records use a fixed list of countries from the seed data.</p>
+        </div><button class="button" id="add-author">Add author</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Nationality</th>
+              <th>Birth</th>
+              <th>Death</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="author-rows"></tbody>
+        </table>
+      </div>
       <div class="pager" id="author-pager" aria-label="Author pages"></div>
     </section>
     <p class="notice" id="notice" role="status" aria-live="polite"></p>
   </main>
-  <dialog id="editor"><form id="editor-form" method="dialog" novalidate><div class="dialog-head"><div><p class="eyebrow" id="form-kicker">RECORD</p><h2 id="form-title">Add record</h2></div><button class="close" type="button" id="close-editor" aria-label="Close">×</button></div><div class="form-grid" id="form-fields"></div><div class="dialog-actions"><button class="button button-light" type="button" id="cancel-editor">Cancel</button><button class="button" type="submit">Save</button></div></form></dialog>
+  <dialog id="editor">
+    <form id="editor-form" method="dialog" novalidate>
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow" id="form-kicker">RECORD</p>
+          <h2 id="form-title">Add record</h2>
+        </div><button class="close" type="button" id="close-editor" aria-label="Close">×</button>
+      </div>
+      <div class="form-grid" id="form-fields"></div>
+      <div class="dialog-actions"><button class="button button-light" type="button"
+          id="cancel-editor">Cancel</button><button class="button" type="submit">Save</button></div>
+    </form>
+  </dialog>
   <script src="js/strings.js?v=2"></script>
   <script src="js/store.js?v=2"></script>
   <script src="js/validation.js?v=2"></script>
   <script src="js/render.js?v=2"></script>
   <script src="js/main.js?v=2"></script>
 </body>
+
 </html>
