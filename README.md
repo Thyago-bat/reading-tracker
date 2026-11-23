@@ -109,7 +109,7 @@ Vanilla HTML, CSS and JavaScript only, with no external libraries. The only exte
 | Gustavo Andrade Moreira de Assis | 2024.1.08.012 | [GustavoM-Andrade](https://github.com/GustavoM-Andrade) |
 | Gabriel Ramirez Cardoso Rodrigues | 2024.1.08.033 | [Gabrielrzdev](https://github.com/Gabrielrzdev) |
 | Bartholomeu Vitor Neto | 2024.1.08.043 | [BartholomeuVitor](https://github.com/BartholomeuVitor) |
-| Carlos Augusto Regis Lorim | 2024.1.08.004 |[carlos-lorim] https://github.com/carlos-lorim |
+| Carlos Augusto Regis Lorim | 2024.1.08.004 |[carlos-lorim](https://github.com/carlos-lorim)|
 
 ## AI usage
  
