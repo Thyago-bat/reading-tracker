@@ -101,6 +101,7 @@ Vanilla HTML, CSS and JavaScript only, with no external libraries. The only exte
  
 ## Team members
  
+
 | Name | Student ID | GitHub |
 |---|---|---|
 | Thyago Pereira de Carvalho | 2024.1.08.039 | [Thyago-bat](https://github.com/Thyago-bat) |
@@ -108,7 +109,8 @@ Vanilla HTML, CSS and JavaScript only, with no external libraries. The only exte
 | Gustavo Andrade Moreira de Assis | 2024.1.08.012 | [GustavoM-Andrade](https://github.com/GustavoM-Andrade) |
 | Gabriel Ramirez Cardoso Rodrigues | 2024.1.08.033 | [Gabrielrzdev](https://github.com/Gabrielrzdev) |
 | Bartholomeu Vitor Neto | 2024.1.08.043 | [BartholomeuVitor](https://github.com/BartholomeuVitor) |
- 
+| Carlos Augusto Regis Lorim | 2024.1.08.004 |[carlos-lorim] https://github.com/carlos-lorim |
+
 ## AI usage
  
 Record AI assistance used by each team member in accordance with the assignment instructions.
